@@ -1,0 +1,5 @@
+*.pyc
+.google_appengine
+env
+dev.db
+public

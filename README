@@ -1,0 +1,13 @@
+Skeleton app for a django project to run on the App Engine using the Cloud SQL Service
+
+in the future would be converted to a project template
+
+SETUP
+=====
+
+1) edit app.yaml and change your app name
+2) edit settings, change the db settings for production at the end of the file
+   with your Cloud SQL Service
+3) install requirements at libs with:
+   pip install -r requirements.txt -t libs/
+

@@ -1,0 +1,2 @@
+south
+git+git://github.com/devsar/django-gae-backends.git
