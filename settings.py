@@ -135,7 +135,32 @@ INSTALLED_APPS = (
     #'myapp'
 )
 
-SESSION_ENGINE = "gae_backends.sessions.cached_db"
+CACHES = {
+    'default': {
+        'BACKEND': 'django.core.cache.backends.memcached.MemcachedCache',
+        'TIMEOUT': 0,
+    }
+}
+
+ON_PRODUCTION = os.getenv('SERVER_SOFTWARE', '').startswith('Google App Engine') or os.getenv('SETTINGS_MODE') == 'prod'
+
+if ON_PRODUCTION:
+    DEBUG=False
+    TEMPLATE_DEBUG=DEBUG
+    DATABASES = {
+        'default': {
+            'ENGINE': 'google.appengine.ext.django.backends.rdbms',
+            'INSTANCE': 'instance:server',
+            'NAME': 'db_name',
+        }
+    }
+    SOUTH_DATABASE_ADAPTERS = {
+        'default': "south.db.mysql"
+    }
+    SESSION_ENGINE = "gae_backends.sessions.cached_db"
+    EMAIL_BACKEND = "gae_backends.mail.AsyncEmailBackend"
+else:
+    EMAIL_BACKEND = "gae_backends.mail.EmailBackend"
 
 # A sample logging configuration. The only tangible logging
 # performed by this configuration is to send an email to
@@ -159,20 +184,5 @@ LOGGING = {
         },
     }
 }
-
-if (os.getenv('SERVER_SOFTWARE', '').startswith('Google App Engine') or os.getenv('SETTINGS_MODE') == 'prod'):
-    # Running on production App Engine, so use a Google Cloud SQL database.
-    DEBUG=False
-    TEMPLATE_DEBUG=DEBUG
-    DATABASES = {
-        'default': {
-            'ENGINE': 'google.appengine.ext.django.backends.rdbms',
-            'INSTANCE': 'instance:server',
-            'NAME': 'db_name',
-        }
-    }
-    SOUTH_DATABASE_ADAPTERS = {
-        'default': "south.db.mysql"
-    }
 
 
