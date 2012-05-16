@@ -137,7 +137,7 @@ INSTALLED_APPS = (
 
 CACHES = {
     'default': {
-        'BACKEND': 'django.core.cache.backends.memcached.MemcachedCache',
+        'BACKEND': 'gae_backends.memcache.MemcacheCache',
         'TIMEOUT': 0,
     }
 }
